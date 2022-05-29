@@ -16,7 +16,6 @@ from scipy.interpolate import UnivariateSpline
 
 
 # Polinomio interpolador de Lagrange
-# https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.lagrange.html
 def lagrange():
 
     # Reading number of unknowns
@@ -67,6 +66,47 @@ def lagrange():
 
 # Polinomio interpolador de Newton
 # https://pythonnumericalmethods.berkeley.edu/notebooks/chapter17.05-Newtons-Polynomial-Interpolation.html
+def newton():
+    def divided_diff(x, y):
+    
+    #function to calculate the divided differences table
+    
+        n = len(y)
+        coef = np.zeros([n, n])
+        # the first column is y
+        coef[:,0] = y
+        
+        for j in range(1,n):
+            for i in range(n-j):
+                coef[i][j] = \
+            (coef[i+1][j-1] - coef[i][j-1]) / (x[i+j]-x[i])
+                
+        return coef
+
+    def newton_poly(coef, x_data, x):
+        '''
+        evaluate the newton polynomial 
+        at x
+        '''
+        n = len(x_data) - 1 
+        p = coef[n]
+        for k in range(1,n+1):
+            p = coef[n-k] + (x -x_data[n-k])*p
+        return p
+
+    x = np.array([0, 6, 15, 21])
+    y = np.array([16, 14, 25, 18])
+    # get the divided difference coef
+    a_s = divided_diff(x, y)[0, :]
+    
+    # evaluate on new data points
+    x_new = np.arange(0, 24)
+    y_new = newton_poly(a_s, x, x_new)
+
+    plt.figure(figsize = (12, 8))
+    plt.plot(x, y, 'bo')
+    plt.plot(x_new, y_new)
+    plt.show()
 
 # Splines
 # https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.UnivariateSpline.html
@@ -96,6 +136,6 @@ print("3 - Spline")
 print("4 - Ajuste")
 op = int(input('Escolha a operação: '))
 if(op==1): lagrange()
-if(op==2): print()
+if(op==2): newton()
 if(op==3): spline()
 if(op==4): print()
