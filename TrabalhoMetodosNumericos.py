@@ -135,11 +135,9 @@ def ajuste():
     def func(x, a, b, c):
         return a * np.exp(-b * x) + c
 
-    xdata = np.linspace(0, 4, 50)
-    y = func(xdata, 2.5, 1.3, 0.5)
-    rng = np.random.default_rng()
-    y_noise = 0.2 * rng.normal(size=xdata.size)
-    ydata = y + y_noise
+    xdata = np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23])
+    ydata = np.array([16, 15, 15, 15, 15, 14, 14, 14, 16, 18, 20, 22, 23, 24, 25, 25, 25, 24, 22, 21, 19, 18, 17, 16])
+    
     plt.plot(xdata, ydata, 'b-', label='data')
 
     popt, pcov = curve_fit(func, xdata, ydata)
