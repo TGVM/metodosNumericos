@@ -4,6 +4,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.interpolate import UnivariateSpline
+from scipy.optimize import curve_fit
 
 #x = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
 #y = [16, 15, 15, 15, 15, 14, 14, 14, 16, 18, 20, 22, 23, 24, 25, 25, 25, 24, 22, 21, 19, 18, 17, 16]
@@ -127,7 +128,27 @@ def spline():
 
 # Ajuste de curvas
 # https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html
+# Não tem material de ajuste de curvas em python sem ser do scipy
 
+
+def ajuste():
+    def func(x, a, b, c):
+        return a * np.exp(-b * x) + c
+
+    xdata = np.linspace(0, 4, 50)
+    y = func(xdata, 2.5, 1.3, 0.5)
+    rng = np.random.default_rng()
+    y_noise = 0.2 * rng.normal(size=xdata.size)
+    ydata = y + y_noise
+    plt.plot(xdata, ydata, 'b-', label='data')
+
+    popt, pcov = curve_fit(func, xdata, ydata)
+    plt.plot(xdata, func(xdata, *popt), 'r-', label='fit: a=%5.3f, b=%5.3f, c=%5.3f' % tuple(popt))
+
+    plt.xlabel('x')
+    plt.ylabel('y')
+    plt.legend()
+    plt.show()
 
 print("Menu:")
 print("1 - Lagrange")
@@ -138,4 +159,4 @@ op = int(input('Escolha a operação: '))
 if(op==1): lagrange()
 if(op==2): newton()
 if(op==3): spline()
-if(op==4): print()
+if(op==4): ajuste()
