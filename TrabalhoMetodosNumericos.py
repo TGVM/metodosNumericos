@@ -6,54 +6,32 @@ import numpy as np
 from scipy.interpolate import UnivariateSpline
 from scipy.optimize import curve_fit
 
-#x = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
-#y = [16, 15, 15, 15, 15, 14, 14, 14, 16, 18, 20, 22, 23, 24, 25, 25, 25, 24, 22, 21, 19, 18, 17, 16]
-
-#Sugestões de ações:
-# 1. Realizar interpolação para avaliar a função em algum ponto, comparando com dados reais.
-# 2. escolher curva a ser ajustada e realizar a avaliação do erro.
-# 3. extrapolar valores através do ajuste de curvas.
-# 4. utilizar um método iterativo para resolver o sistema linear e obter os coeficientes do polinômio interpolador.
-
-
 # Polinomio interpolador de Lagrange
 def lagrange():
 
-    # Reading number of unknowns
-    n = int(input('Enter number of data points: '))
-
-    # Making numpy array of n & n x n size and initializing 
-    # to zero for storing x and y value along with differences of y
-    x = np.zeros((n))
-    y = np.zeros((n))
-
-
-    # Reading data points
-    print('Enter data for x and y: ')
-    for i in range(n):
-        x[i] = float(input( 'x['+str(i)+']='))
-        y[i] = float(input( 'y['+str(i)+']='))
+    x = np.array([0, 6, 15, 21])
+    y = np.array([16, 14, 25, 18])
 
 
     # Reading interpolation point
-    xp = float(input('Enter interpolation point: '))
+    xp = float(input('Escolha o valor de x para a interpolação: '))
 
     # Set interpolated value initially to zero
     yp = 0
 
     # Implementing Lagrange Interpolation
-    for i in range(n):
+    for i in range(len(x)):
 
         p = 1
 
-        for j in range(n):
+        for j in range(len(x)):
             if i != j:
                 p = p * (xp - x[j])/(x[i] - x[j])
 
         yp = yp + p * y[i]
 
     # mostrar resultado para 1 valor
-    print('Interpolated value at %.3f is %.3f.' % (xp, yp))
+    print('Valor interpolado para %.3f é %.3f.' % (xp, yp))
     
     # plotagem de gráfico abaixo não funciona
 
@@ -133,7 +111,8 @@ def spline():
 
 def ajuste():
     def func(x, a, b, c):
-        return a * np.exp(-b * x) + c
+        return a * np.exp(x * 2) + b * x + c
+        #y = ax^2 + bx + c
 
     xdata = np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23])
     ydata = np.array([16, 15, 15, 15, 15, 14, 14, 14, 16, 18, 20, 22, 23, 24, 25, 25, 25, 24, 22, 21, 19, 18, 17, 16])
