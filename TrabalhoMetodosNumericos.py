@@ -14,10 +14,10 @@ def lagrange():
 
 
     # Reading interpolation point
-    xp = float(input('Escolha o valor de x para a interpolação: '))
+    xp = float(input('Escolha o valor de x para a interpolação: ')) #leitura do dado de entrada
 
     # Set interpolated value initially to zero
-    yp = 0
+    yp = 0 #valor de interpolacao inicializa em 0
 
     # Implementing Lagrange Interpolation
     for i in range(len(x)):
