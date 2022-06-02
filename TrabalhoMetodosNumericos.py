@@ -33,55 +33,47 @@ def lagrange():
     # mostrar resultado para 1 valor
     print('Valor interpolado para %.3f é %.3f.' % (xp, yp))
     
-    # plotagem de gráfico abaixo não funciona
 
-    # x_new = np.arange(0, 2.1, 0.1)
-    # plt.scatter(x, y)
-    # #plt.plot(x_new, Polynomial(poly.coef[::-1])(x_new), label='Polynomial')
-    # #plt.plot(x_new, 3x_new**2 - 2x_new + 0*x_new, label=r"$3 x^2 - 2 x$", linestyle='-.')
-    # plt.legend()
-    # plt.show()
 
 
 # Polinomio interpolador de Newton
 # https://pythonnumericalmethods.berkeley.edu/notebooks/chapter17.05-Newtons-Polynomial-Interpolation.html
 def newton():
-    def divided_diff(x, y):
-    
-    #function to calculate the divided differences table
+    def tab_dif(x, y):
+    # Função que calcula a tabela de diferenças divididas
     
         n = len(y)
+        # Gera uma tabela vazia
         coef = np.zeros([n, n])
-        # the first column is y
+        # Primeira coluna recebe os valores de Y
         coef[:,0] = y
         
         for j in range(1,n):
             for i in range(n-j):
-                coef[i][j] = \
-            (coef[i+1][j-1] - coef[i][j-1]) / (x[i+j]-x[i])
-                
+                coef[i][j] = (coef[i+1][j-1] - coef[i][j-1]) / (x[i+j]-x[i])
+                # Cálculo de (f(x1) - f(x0)) / (x1 - x0)
+
         return coef
 
-    def newton_poly(coef, x_data, x):
+    def newton_pol(coef, x_data, x):
         '''
-        evaluate the newton polynomial 
-        at x
+        Avalia o polinômio de Newton em x
         '''
-        n = len(x_data) - 1 
-        p = coef[n]
-        for k in range(1,n+1):
-            p = coef[n-k] + (x -x_data[n-k])*p
+        n = len(x_data) - 1 # n recebe o tamanho de pontos que conhecemos os valores - 1
+        p = coef[n] # o polinômio p recebe a posição n da tabela de diferenças divididas
+        for k in range(1,n+1): # Em um laço de 1 até n+1  
+            p = coef[n-k] + (x -x_data[n-k])*p # p recebe seu valor anterior multiplicado pelos valores de x - o valor de x_data na posição n-k, somado à posição (n-k) da tabela de diferenças
         return p
 
-    x = np.array([0, 6, 15, 21])
-    y = np.array([16, 14, 25, 18])
-    # get the divided difference coef
-    a_s = divided_diff(x, y)[0, :]
+    x = np.array([0, 6, 15, 21]) # Criação do array com valores de x
+    y = np.array([16, 14, 25, 18]) # Criação do array com valores de y
+    # chama a função para criar a tabela de diferenças
+    dd = tab_dif(x, y)[0, :]
     
-    # evaluate on new data points
-    x_new = np.arange(0, 24)
-    y_new = newton_poly(a_s, x, x_new)
+    x_new = np.arange(0, 23) # Cria array com os valores a serem interpolados
+    y_new = newton_pol(dd, x, x_new) # Chama a função de avaliação de polinômio de Newton
 
+    # Plotagem de gráfico
     plt.figure(figsize = (12, 8))
     plt.plot(x, y, 'bo')
     plt.plot(x_new, y_new)
@@ -111,7 +103,7 @@ def spline():
 
 def ajuste():
     def func(x, a, b, c):
-        return a * np.exp(x * 2) + b * x + c
+        return a * x**2 + b * x + c
         #y = ax^2 + bx + c
 
     xdata = np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23])
