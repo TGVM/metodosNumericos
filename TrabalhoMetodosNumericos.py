@@ -26,9 +26,9 @@ def lagrange():
 
         for j in range(len(x)):
             if i != j:
-                p = p * (xp - x[j])/(x[i] - x[j])
+                p = p * (xp - x[j])/(x[i] - x[j]) #funcao do polinomio de lagrange
 
-        yp = yp + p * y[i]
+        yp = yp + p * y[i] #execucao do polinomio
 
     # mostrar resultado para 1 valor
     print('Valor interpolado para %.3f é %.3f.' % (xp, yp))
